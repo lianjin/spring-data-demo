@@ -1,18 +1,15 @@
-/**
- * @(#)EntranceController.java, 二月 07, 2017.
- * <p>
- * Copyright 2017 fenbi.com. All rights reserved.
- * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
- */
 package com.example.ctrl;
 
 import com.example.simple.SimpleUserRepository;
 import com.example.simple.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author jinlian
@@ -27,4 +24,23 @@ public class EntranceController {
     public User getByUsername(@PathVariable("username") String username) {
         return simpleUserRepository.findByUsername(username);
     }
+
+    @RequestMapping("/users")
+    public List<User> getByFirstName(@RequestParam("firstname") String firstname) {
+        return simpleUserRepository.findByFirstname(firstname);
+    }
+
+    @RequestMapping(value = "/users", method = RequestMethod.POST)
+    public User save(@RequestBody User user) {
+        return simpleUserRepository.save(user);
+    }
+
+    @RequestMapping("/users/getAll")
+    public Page<User> getAll(@RequestParam(value = "page", defaultValue = "0") int page,
+                             @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
+        Sort sort = new Sort(Sort.Direction.ASC, "username");
+        Pageable pageRequest = new PageRequest(page, pageSize, sort);
+        return simpleUserRepository.findAll(pageRequest);
+    }
+
 }

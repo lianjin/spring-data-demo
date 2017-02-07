@@ -1,20 +1,15 @@
-/**
- * @(#)SimpleUserRepository.java, 二月 07, 2017.
- * <p>
- * Copyright 2017 fenbi.com. All rights reserved.
- * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
- */
 package com.example.simple;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;
 
 /**
  * @author jinlian
  */
-public interface SimpleUserRepository extends CrudRepository<User, Long> {
+public interface SimpleUserRepository extends PagingAndSortingRepository<User, Long> {
 
     User findByUsername(String username);
 
